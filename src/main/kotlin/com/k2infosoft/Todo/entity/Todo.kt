@@ -14,10 +14,10 @@ data class Todo(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
     @NotEmpty(message = "title must not be blank")
-    val title: String,
+    var title: String,
     @NotEmpty(message = "description must not be blank")
-    val description: String,
-    val completed: Boolean,
+    var description: String,
+    var completed: Boolean,
     val createdDate: String = LocalDateTime.now().toString(),
     val updatedDate: String = LocalDateTime.now().toString()
 ){

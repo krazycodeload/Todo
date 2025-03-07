@@ -11,7 +11,7 @@ interface TodoService {
 
     fun getAllTodos(): ResponseEntity<MutableList<TodoDto>>
 
-    fun updateTodo(todoDto: TodoDto, id: Long): ResponseEntity<TodoDto>
+    fun updateTodo(id: Long,todoDto: TodoDto): ResponseEntity<TodoDto>
 
     fun deleteTodo(id: Long): ResponseEntity<Void>
 

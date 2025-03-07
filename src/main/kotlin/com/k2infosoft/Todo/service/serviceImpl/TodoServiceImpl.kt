@@ -16,9 +16,11 @@ class TodoServiceImpl(private val todoRepository: TodoRepository) : TodoService 
 
     @Transactional
     override fun addTodo(todoDto: TodoDto): ResponseEntity<TodoDto> {
-        var todo = todoDto.toEntity()
-        todoRepository.save<Todo>(todo)
-        return ResponseEntity.ok(todo.toDTO())
+//        var todo = todoDto.toEntity()
+//        todoRepository.save<Todo>(todo)
+//        return ResponseEntity.ok(todo.toDTO())
+        var user = todoDto.toEntity()
+        return ResponseEntity.ok(todoRepository.save(user).toDTO())
     }
     @Transactional
     override fun getTodo(id: Long): ResponseEntity<TodoDto> {
@@ -30,14 +32,19 @@ class TodoServiceImpl(private val todoRepository: TodoRepository) : TodoService 
     }
     @Transactional
     override fun updateTodo(
-        todoDto: TodoDto,
-        id: Long
+        id: Long,
+        todoDto: TodoDto
     ): ResponseEntity<TodoDto> {
-        return todoRepository.findById(id).map {
-            var todo = todoDto.toEntity().copy(title = it.title, description = it.description, completed = it.completed)
-            todoRepository.save<Todo>(todo)
-            ResponseEntity.ok(todo.toDTO())
-        }.orElse(ResponseEntity.notFound().build())
+//        return todoRepository.findById(id).map {
+//            var todo = todoDto.toEntity().copy(title = it.title, description = it.description, completed = it.completed)
+//            todoRepository.save<Todo>(todo)
+//            ResponseEntity.ok(todo.toDTO())
+//        }.orElse(ResponseEntity.notFound().build())
+        val todo = todoRepository.findById(id).orElseThrow {
+            IllegalArgumentException("Todo not found with id $id")
+        }
+        todo.apply { title = todoDto.title; description = todoDto.description; completed = todoDto.completed; }
+        return ResponseEntity.ok(todoRepository.save(todo).toDTO())
     }
     @Transactional
     override fun deleteTodo(id: Long): ResponseEntity<Void> {

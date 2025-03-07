@@ -1,13 +1,36 @@
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    path: /swagger-ui.html
-    operationsSorter: alpha
-    tagsSorter: alpha
-  default-produces-media-type: application/json
-  show-actuator: true
-  paths-to-match: "/**"
-  packages-to-scan: com.k2infosoft.controller  # Change to your base package
-  cache:
-    disabled: true
+spring:
+  application:
+    name: todo_rest-service
+#  datasource:
+#    url: jdbc:h2:mem:userdb
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+  datasource:
+      url: jdbc:mysql://localhost:3306/tododb?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: H2ow@ter
+  jpa:
+    database: mysql
+    generate-ddl: true
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+
+---
+--  Copyright 2015-2016 the original author or authors.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
