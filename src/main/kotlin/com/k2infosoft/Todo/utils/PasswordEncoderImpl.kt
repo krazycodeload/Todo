@@ -9,7 +9,7 @@ object PasswordEncoderImpl {
     fun main(args: Array<String>) {
         val passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
 
-        println(passwordEncoder.encode("admin"))
+        println(passwordEncoder.encode("kaushal"))
 
         println(passwordEncoder.encode("admin"))
     }
