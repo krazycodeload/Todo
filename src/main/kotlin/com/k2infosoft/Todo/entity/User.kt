@@ -20,6 +20,8 @@ data class User(
     val name: String,
     @NotEmpty(message = "UserName must not be blank")
     val username: String,
+    @NotEmpty(message = "UserName must not be blank")
+    val email: String,
     @NotEmpty(message = "Password must not be blank")
     val password: String,
     @ManyToMany(
