@@ -1,0 +1,13 @@
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: alpha
+    tagsSorter: alpha
+  default-produces-media-type: application/json
+  show-actuator: true
+  paths-to-match: "/**"
+  packages-to-scan: com.k2infosoft.controller  # Change to your base package
+  cache:
+    disabled: true
