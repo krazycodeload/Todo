@@ -2,10 +2,14 @@ package com.k2infosoft.Todo.Controller
 
 import com.k2infosoft.Todo.dto.TodoDto
 import com.k2infosoft.Todo.service.TodoService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import org.springframework.context.annotation.Lazy
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -29,7 +33,15 @@ class TodoController(private val todoService: TodoService) {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid subscription key")
         }
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+        summary = "Create Todo REST API",
+        description = "Create Todo REST API is used to save todo in a database"
+    )
+    @ApiResponse(
+        responseCode = "201",
+        description = "HTTP Status 201 CREATED"
+    )
     @PostMapping
     fun saveTodo(@RequestHeader("Ocp-Apim-Subscription-Key") subscriptionKey: String, @Valid @RequestBody todoDto: TodoDto): ResponseEntity<TodoDto> {
         validateSuscriptionKey(subscriptionKey)
@@ -37,8 +49,15 @@ class TodoController(private val todoService: TodoService) {
         return ResponseEntity<TodoDto>(savedTodo.body, HttpStatus.CREATED)
     }
 
-
-
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+        summary = "Update Todo REST API",
+        description = "Update Todo REST API is used to update a particular todo in the database"
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "HTTP Status 200 SUCCESS"
+    )
     @PutMapping("{id}")
     fun updateTodo(@RequestHeader("Ocp-Apim-Subscription-Key") subscriptionKey: String,
                    @PathVariable(value = "id") todoid: Long,
@@ -48,13 +67,30 @@ class TodoController(private val todoService: TodoService) {
          return ResponseEntity<TodoDto>(updatedTodo.body, HttpStatus.OK)
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Operation(
+        summary = "Get All Todo REST API",
+        description = "Get All Todo REST API is used to get a all the todos from the database"
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "HTTP Status 200 SUCCESS"
+    )
     @GetMapping
     fun getAllTodos(@RequestHeader("Ocp-Apim-Subscription-Key") subscriptionKey: String): ResponseEntity<List<TodoDto>> {
         validateSuscriptionKey(subscriptionKey)
         var todos: ResponseEntity<MutableList<TodoDto>> = todoService.getAllTodos()
         return ResponseEntity<List<TodoDto>>(todos.body, HttpStatus.OK)
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Operation(
+        summary = "Get Todo By ID REST API",
+        description = "Get Todo By ID REST API is used to get a single todo from the database"
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "HTTP Status 200 SUCCESS"
+    )
     @GetMapping("{id}")
     fun getTodo(@RequestHeader("Ocp-Apim-Subscription-Key") subscriptionKey: String,@PathVariable(value = "id") id: Long): ResponseEntity<TodoDto> {
         validateSuscriptionKey(subscriptionKey)
@@ -62,6 +98,15 @@ class TodoController(private val todoService: TodoService) {
         return ResponseEntity<TodoDto>(todo.body, HttpStatus.OK)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+        summary = "Delete Todo REST API",
+        description = "Delete Todo REST API is used to delete a particular todo from the database"
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "HTTP Status 200 SUCCESS"
+    )
     @DeleteMapping("{id}")
     fun deleteTodo(@RequestHeader("Ocp-Apim-Subscription-Key") subscriptionKey: String,@PathVariable(value = "id") id: Long): ResponseEntity<Void> {
         validateSuscriptionKey(subscriptionKey)
@@ -69,6 +114,15 @@ class TodoController(private val todoService: TodoService) {
         return ResponseEntity<Void>(deletedTodo.body, HttpStatus.OK)
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Operation(
+        summary = "GET Todo REST API",
+        description = "GET Todo REST API is used to delete a particular todo from the database"
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "HTTP Status 200 SUCCESS"
+    )
     @GetMapping("/isCompleted/{id}")
     fun isCompleted(@RequestHeader("Ocp-Apim-Subscription-Key") subscriptionKey: String,@PathVariable(value = "id") id: Long): ResponseEntity<TodoDto> {
         validateSuscriptionKey(subscriptionKey)
@@ -76,6 +130,15 @@ class TodoController(private val todoService: TodoService) {
         return ResponseEntity<TodoDto>(todo.body, HttpStatus.OK)
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Operation(
+        summary = "GET Todo REST API",
+        description = "GET Todo REST API is used to delete a particular todo from the database"
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "HTTP Status 200 SUCCESS"
+    )
     @GetMapping("/isInCompleted/{id}")
     fun isInCompleted(@RequestHeader("Ocp-Apim-Subscription-Key") subscriptionKey: String,@PathVariable(value = "id") id: Long): ResponseEntity<TodoDto> {
         validateSuscriptionKey(subscriptionKey)
